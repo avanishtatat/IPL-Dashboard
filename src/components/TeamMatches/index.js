@@ -40,17 +40,17 @@ class TeamMatches extends Component {
     const {teamMatches} = this.state
     const {recentMatches} = teamMatches
     const totalWin = recentMatches.reduce((acc, eachMatch) => {
-      if (eachMatch.match_status === 'Won') acc += 1
+      if (eachMatch.match_status === 'Won') return acc + 1
 
       return acc
     }, 0)
     const totalLost = recentMatches.reduce((acc, eachMatch) => {
-      if (eachMatch.match_status === 'Lost') acc += 1
+      if (eachMatch.match_status === 'Lost') return acc + 1
 
       return acc
     }, 0)
     const totalDrawn = recentMatches.reduce((acc, eachMatch) => {
-      if (eachMatch.match_status === 'Drawn') acc += 1
+      if (eachMatch.match_status === 'Drawn') return acc + 1
 
       return acc
     }, 0)
@@ -94,7 +94,7 @@ class TeamMatches extends Component {
     return (
       <div className="team-matches-container">
         {isLoading ? (
-          <div testid="loader">
+          <div data-testid="loader">
             <Loader type="Oval" color="#ffffff" height={50} width={50} />
           </div>
         ) : (
