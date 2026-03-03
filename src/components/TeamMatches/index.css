@@ -1,0 +1,54 @@
+/* Write your CSS here */
+
+.team-matches-container {
+  background-image: linear-gradient(to bottom, #d91c1f, #a4261d, #0f172a);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.team-banner {
+  width: 90%;
+}
+
+.latest-matches-heading {
+  width: 90%;
+  color: #ffffff;
+  font-family: 'Bree Serif';
+  font-size: 14px;
+}
+
+.latest-match-details-container {
+  background-color: #0f172a;
+  border-radius: 10px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.match-card-container {
+  list-style-type: none;
+  padding-left: 0%;
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .latest-match-details-container {
+    flex-direction: row;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .latest-matches-heading {
+    font-size: 18px;
+    text-align: left;
+  }
+}
