@@ -1,6 +1,8 @@
 // Write your code here
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
+import {Pie, PieChart, Tooltip, Cell, Legend} from 'recharts'
+// import {RechartsDevtools} from '@recharts/devtools'
 
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import LatestMatch from '../LatestMatch'
@@ -28,18 +30,84 @@ class TeamMatches extends Component {
     this.setState({teamMatches: updatedData, isLoading: false})
   }
 
+  handleClick = () => {
+    const {history} = this.props
+    // console.log("History =>", history)
+    history.push('/')
+  }
+
+  renderPieChart = () => {
+    const {teamMatches} = this.state
+    const {recentMatches} = teamMatches
+    const totalWin = recentMatches.reduce((acc, eachMatch) => {
+      if (eachMatch.match_status === 'Won') acc += 1
+
+      return acc
+    }, 0)
+    const totalLost = recentMatches.reduce((acc, eachMatch) => {
+      if (eachMatch.match_status === 'Lost') acc += 1
+
+      return acc
+    }, 0)
+    const totalDrawn = recentMatches.reduce((acc, eachMatch) => {
+      if (eachMatch.match_status === 'Drawn') acc += 1
+
+      return acc
+    }, 0)
+    const data = [
+      {name: 'Won', value: totalWin},
+      {name: 'Loss', value: totalLost},
+      {name: 'Drawn', value: totalDrawn},
+    ]
+    console.log(
+      `Total Wins => ${totalWin}, Totat Loss => ${totalLost} and Total Drawn => ${totalDrawn}`,
+    )
+    return (
+      <>
+        <PieChart width={250} height={200}>
+          <Pie data={data} dataKey="value">
+            <Cell fill="#4CAF50" />
+            <Cell fill="#F44336" />
+            <Cell fill="#FFC107" />
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+        <div className="statistic-text-container">
+          <p className="total-stats">
+            <b>Total Won: </b> {totalWin}
+          </p>
+          <p className="total-stats">
+            <b>Total Loss: </b> {totalLost}
+          </p>
+          <p className="total-stats">
+            <b>Total Drawn: </b> {totalDrawn}
+          </p>
+        </div>
+      </>
+    )
+  }
+
   render() {
     const {isLoading, teamMatches} = this.state
     const {latestMatchDetails, recentMatches, teamBannerUrl} = teamMatches
     return (
       <div className="team-matches-container">
         {isLoading ? (
-          <div>
+          <div testid="loader">
             <Loader type="Oval" color="#ffffff" height={50} width={50} />
           </div>
         ) : (
           <>
-            {' '}
+            <div className="button-container">
+              <button
+                type="button"
+                className="button"
+                onClick={this.handleClick}
+              >
+                <span>Back</span>
+              </button>
+            </div>
             <img
               src={teamBannerUrl}
               alt="team banner"
@@ -49,6 +117,11 @@ class TeamMatches extends Component {
             <div className="latest-match-details-container">
               <LatestMatch latestMatchDetails={latestMatchDetails} />
             </div>
+            <h1 className="latest-matches-heading">Match Statistic</h1>
+            <div className="pie-chart-container" data-testid="pieChart">
+              {this.renderPieChart()}
+            </div>
+
             <ul className="match-card-container">
               {recentMatches.map(eachMatchCard => (
                 <MatchCard
